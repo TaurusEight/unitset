@@ -1,0 +1,137 @@
+<?xml version='1.0' encoding='us-ascii'?>
+<xml>
+    <units>
+    <!-- TODO: re-establish write order -->
+        <unit name="mem0"  value="0"  cluster0_name="c0_ld0"  cluster1_name="c1_ld0"  polarity="neutral" last_even="may"   write_order="0"  pipemask_bit="0" doc_group="mem"/>
+        <unit name="mem1"  value="1"  cluster0_name="c0_ld1"  cluster1_name="c1_ld1"  polarity="neutral" last_even="may"   write_order="1"  pipemask_bit="1" doc_group="mem"/>
+        <unit name="mem2"  value="2"  cluster0_name="c0_st0"  cluster1_name="c1_st0"  polarity="neutral" last_even="may"   write_order="2"  pipemask_bit="2" doc_group="mem"/>
+        <unit name="alu0"  value="3"  cluster0_name="c0_alu0" cluster1_name="c1_alu0" polarity="neutral" last_even="may"   write_order="5"  pipemask_bit="3" doc_group="alu"/>
+        <unit name="alu1"  value="4"  cluster0_name="c0_alu1" cluster1_name="c1_alu1" polarity="neutral" last_even="may"   write_order="6"  pipemask_bit="4" doc_group="alu"/>
+        <unit name="alu2"  value="5"  cluster0_name="c0_alu2" cluster1_name="c1_alu2" polarity="neutral" last_even="may"   write_order="7"  pipemask_bit="5" doc_group="alu"/>
+        <unit name="alu3"  value="6"  cluster0_name="c0_alu3" cluster1_name="c1_alu3" polarity="neutral" last_even="may"   write_order="8"  pipemask_bit="6" doc_group="alu"/>
+        <unit name="fpu0"  value="7"  cluster0_name="c0_fpu0" cluster1_name="c1_fpu0" polarity="neutral" last_even="may"   write_order="3"  pipemask_bit="7" doc_group="fpu"/>
+        <unit name="fpu1"  value="8"  cluster0_name="c0_fpu1" cluster1_name="c1_fpu1" polarity="neutral" last_even="may"   write_order="4"  pipemask_bit="8" doc_group="fpu"/>
+        <unit name="jeu0"  value="9"  cluster0_name="c0_jeu0" cluster1_name="c1_jeu0" polarity="neutral" last_even="may"   write_order="9"  pipemask_bit="9" doc_group="jeu"/>
+        <unit name="jeu1"  value="10" cluster0_name="c0_jeu1" cluster1_name="c1_jeu1" polarity="neutral" last_even="may"   write_order="10" pipemask_bit="10" doc_group="jeu"/>
+		<unit name="std0"  value="11" cluster0_name="c0_std0" cluster1_name="c1_std0" polarity="neutral" last_even="may"   write_order="11" pipemask_bit="11" doc_group="alu"/>
+        <unit name="ret"   value="12"                                                 polarity="neutral" last_even="may"   write_order="12"                   doc_group="jeu"/>
+    <!-- fake units below this line; used to constrain unit scheduling -->
+    </units>
+
+    <unitgroups>
+	<unitgroup name="alu">
+	  <unitset><unit name="alu0" primary=""/></unitset>
+	  <unitset><unit name="alu1" primary=""/></unitset>
+	  <unitset><unit name="alu2" primary=""/></unitset>
+	  <unitset><unit name="alu3" primary=""/></unitset>
+	</unitgroup>
+	<unitgroup name="alu01">
+	  <unitset><unit name="alu0" primary=""/></unitset>
+	  <unitset><unit name="alu1" primary=""/></unitset>
+	</unitgroup>
+	<unitgroup name="alu0">
+	  <unitset><unit name="alu0" primary=""/></unitset>
+	</unitgroup>
+	<unitgroup name="alu1">
+	  <unitset><unit name="alu1" primary=""/></unitset>
+	</unitgroup>
+	<unitgroup name="alu2">
+	  <unitset><unit name="alu2" primary=""/></unitset>
+	</unitgroup>
+	<unitgroup name="alu3">
+	  <unitset><unit name="alu3" primary=""/></unitset>
+	</unitgroup>
+	<unitgroup name="fastcmp">
+	  <unitset><unit name="alu1" primary=""/></unitset>
+	  <unitset><unit name="alu3" primary=""/></unitset>
+	</unitgroup>
+	<unitgroup name="ld">
+	  <unitset><unit name="mem0"/></unitset>
+	  <unitset><unit name="mem1"/></unitset>
+	</unitgroup>
+	<unitgroup name="mem0">
+	  <unitset><unit name="mem0"/></unitset>
+	</unitgroup>
+	<unitgroup name="mem1">
+	  <unitset><unit name="mem1"/></unitset>
+	</unitgroup>
+  <unitgroup name="mem2">
+    <unitset><unit name="mem2"/></unitset>
+  </unitgroup>
+  <unitgroup name="mem01">
+    <unitset><unit name="mem0"/></unitset>
+    <unitset><unit name="mem1"/></unitset>
+  </unitgroup>
+  <unitgroup name="st">
+    <unitset><unit name="mem2" primary=""/><unit name="std0" coupled=""/></unitset>
+  </unitgroup>
+  <unitgroup name="fst">
+    <unitset><unit name="mem2" primary=""/><unit name="fpu1" coupled=""/></unitset>
+  </unitgroup>
+  <unitgroup name="ldp">
+    <unitset><unit name="mem0" primary=""/></unitset>
+    <unitset><unit name="mem1" primary=""/></unitset>
+  </unitgroup>
+  <unitgroup name="br">
+    <unitset><unit name="jeu0"/></unitset>
+    <unitset><unit name="jeu1"/></unitset>
+  </unitgroup>
+  <unitgroup name="cond_br">
+    <unitset><unit name="jeu0" primary=""/><unit name="alu2" coupled=""/></unitset>
+    <unitset><unit name="jeu1" primary=""/><unit name="alu3" coupled=""/></unitset>
+  </unitgroup>
+  <unitgroup name="reg_br">
+    <unitset><unit name="jeu1" primary=""/><unit name="alu3" coupled=""/></unitset>
+  </unitgroup>
+  <unitgroup name="g2f">
+    <unitset><unit name="alu2" primary=""/><unit name="fpu1" coupled=""/></unitset>
+  </unitgroup>
+  <unitgroup name="f2g">
+    <unitset><unit name="fpu0" primary=""/><unit name="alu3" coupled=""/></unitset>
+  </unitgroup>
+  <unitgroup name="fcmpi">
+    <unitset><unit name="fpu0" primary=""/><unit name="alu1" coupled=""/></unitset>
+  </unitgroup>
+  <unitgroup name="fpu">
+    <unitset><unit name="fpu0" primary=""/></unitset>
+    <unitset><unit name="fpu1" primary=""/></unitset>
+  </unitgroup>
+  <unitgroup name="fpu0">
+    <unitset><unit name="fpu0" primary=""/></unitset>
+  </unitgroup>
+  <unitgroup name="fpu1">
+    <unitset><unit name="fpu1" primary=""/></unitset>
+  </unitgroup>
+  <unitgroup name="fpu_bfloat">
+    <unitset><unit name="fpu1" primary=""/></unitset>
+  </unitgroup>
+  <unitgroup name="fpu_crypto_aes">
+    <unitset><unit name="fpu1" primary=""/></unitset>
+  </unitgroup>
+  <unitgroup name="fpu_crypto_pmul">
+    <unitset><unit name="fpu1" primary=""/></unitset>
+  </unitgroup>
+  <unitgroup name="fdiv">
+    <unitset><unit name="fpu0" primary=""/></unitset>
+  </unitgroup>
+  <unitgroup name="fcvt">
+    <unitset><unit name="fpu0" primary=""/></unitset>
+  </unitgroup>
+  <unitgroup name="fpu_int_mul">
+    <unitset><unit name="fpu1" primary=""/></unitset>
+  </unitgroup>
+  <unitgroup name="fpu_crypto_sha">
+    <unitset><unit name="fpu1" primary=""/></unitset>
+  </unitgroup>
+  <unitgroup name="fpu_sad">
+    <unitset><unit name="fpu1" primary=""/></unitset>
+  </unitgroup>
+  <unitgroup name="fpu_fprom">
+    <unitset><unit name="fpu1" primary=""/></unitset>
+  </unitgroup>
+  <unitgroup name="ret">
+    <unitset><unit name="ret"/></unitset>
+  </unitgroup>
+  <unitgroup name="helper"/>
+    </unitgroups>
+</xml>
